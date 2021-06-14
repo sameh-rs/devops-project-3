@@ -136,7 +136,10 @@ jobs:
           name: Run frontend test
           working_directory: ./frontend
           command: npm test
-
+      - persist_to_workspace:
+          root: .
+          paths:
+            - frontend/node_modules
 
   test-backend:
     <<: *nodeImage
@@ -148,7 +151,10 @@ jobs:
           name: run backend test
           working_directory: ./backend
           command: npm test
-
+      - persist_to_workspace:
+          root: .
+          paths:
+            - backend/node_modules
 
   scan-frontend:
     <<: *nodeImage
@@ -160,7 +166,7 @@ jobs:
           name: Scan frontend for security vulnerabilities
           working_directory: ./frontend
           command: |
-            npm audit fix --audit-level=critical --force
+            npm audit fix
             npm audit --audit-level=critical
       - persist_to_workspace:
           root: .
@@ -177,7 +183,7 @@ jobs:
           name: scan backend for security vulnerabilities
           working_directory: ./backend
           command: |
-            npm audit fix --audit-level=critical --force
+            npm audit fix
             npm audit --audit-level=critical
       - persist_to_workspace:
           root: .
@@ -291,14 +297,7 @@ jobs:
           name: Run migrations
           working_directory: ./backend
           command: |
-            npm install
             npm run migrations > status
-      - run:
-          name: Run migrations
-          when: on_fail
-          working_directory: ./backend
-          command: |
-            cat /home/circleci/.npm/_logs/2021-06-14T21_18_01_897Z-debug.log
       - run:
           name: PUT migration results to memstash
           working_directory: ./backend
@@ -386,11 +385,19 @@ jobs:
             pip install awscli
             aws --version
       - run:
+          name: project
+          working_directory: ./backend
+          command: |
+            pwd
+            ls -la
+            npm run build
+      - run:
           name: Deploy backend
           working_directory: ./.circleci/ansible/
           command: |
             pwd
             ls -la
+            cat inventory
             ansible-playbook -i inventory deploy-backend.yml -vvv
 
       # Here's where you will add some code to rollback on failure  
@@ -484,15 +491,15 @@ workflows:
       - install-frontend-dependencies
       - install-backend-dependencies
 
-      - build-backend:
+      - scan-backend:
           requires: [install-backend-dependencies]
-      - build-frontend:
+      - scan-frontend:
           requires: [install-frontend-dependencies]
 
-      - scan-frontend:
-          requires: [build-frontend]
-      - scan-backend:
-          requires: [build-backend]
+      - build-frontend:
+          requires: [scan-frontend]
+      - build-backend:
+          requires: [scan-backend]
           
       - test-frontend:
           requires: [build-frontend]
