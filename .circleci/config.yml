@@ -291,6 +291,7 @@ jobs:
           name: Run migrations
           working_directory: ./backend
           command: |
+            npm install typescript --save-dev
             npm run migrations > status
       - run:
           name: PUT migration results to memstash
