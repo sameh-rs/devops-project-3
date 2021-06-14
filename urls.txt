@@ -1,0 +1,14 @@
+Public Url to GitHub repository (not private) [URL01]
+https://github.com/sameh-rm/devops-project-3
+
+Public URL for your S3 Bucket (aka, your green candidate front-end) [URL02]
+http://udapeople-55f1952.s3-website.us-east-2.amazonaws.com/
+
+Public URL for your CloudFront distribution (aka, your blue production front-end) [URL03]
+d1y0gh9custdd5.cloudfront.net
+
+Public URLs to deployed application back-end in EC2 [URL04]
+http://ec2-18-224-202-42.us-east-2.compute.amazonaws.com:3030/api/status
+
+Public URL to your Prometheus Server [URL05]
+http://ec2-3-143-115-180.us-east-2.compute.amazonaws.com:9090/graph
