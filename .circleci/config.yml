@@ -136,10 +136,7 @@ jobs:
           name: Run frontend test
           working_directory: ./frontend
           command: npm test
-      - persist_to_workspace:
-          root: .
-          paths:
-            - frontend/node_modules
+
 
   test-backend:
     <<: *nodeImage
@@ -151,10 +148,7 @@ jobs:
           name: run backend test
           working_directory: ./backend
           command: npm test
-      - persist_to_workspace:
-          root: .
-          paths:
-            - backend/node_modules
+
 
   scan-frontend:
     <<: *nodeImage
