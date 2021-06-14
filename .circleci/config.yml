@@ -294,6 +294,12 @@ jobs:
             npm install
             npm run migrations > status
       - run:
+          name: Run migrations
+          when: on_fail
+          working_directory: ./backend
+          command: |
+            cat /home/circleci/.npm/_logs/2021-06-14T21_18_01_897Z-debug.log
+      - run:
           name: PUT migration results to memstash
           working_directory: ./backend
           command: |
