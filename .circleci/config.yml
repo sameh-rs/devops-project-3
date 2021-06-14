@@ -483,15 +483,15 @@ workflows:
       - install-frontend-dependencies
       - install-backend-dependencies
 
-      - scan-backend:
+      - build-backend:
           requires: [install-backend-dependencies]
-      - scan-frontend:
+      - build-frontend:
           requires: [install-frontend-dependencies]
 
-      - build-frontend:
-          requires: [scan-frontend]
-      - build-backend:
-          requires: [scan-backend]
+      - scan-frontend:
+          requires: [build-frontend]
+      - scan-backend:
+          requires: [build-backend]
           
       - test-frontend:
           requires: [build-frontend]
