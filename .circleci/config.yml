@@ -166,7 +166,7 @@ jobs:
           name: Scan frontend for security vulnerabilities
           working_directory: ./frontend
           command: |
-            npm audit fix
+            npm audit fix --force
             npm audit --audit-level=critical
       - persist_to_workspace:
           root: .
@@ -183,7 +183,7 @@ jobs:
           name: scan backend for security vulnerabilities
           working_directory: ./backend
           command: |
-            npm audit fix
+            npm audit fix --force
             npm audit --audit-level=critical
       - persist_to_workspace:
           root: .
